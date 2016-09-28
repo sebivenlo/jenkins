@@ -22,6 +22,12 @@ services:
     - SONAR_PORT=9000
     - SONAR_DB_PORT=5432
 
+ wildfly:
+  image: jboss/wildfly
+  ports:
+    - "8080:8080"
+    - "9990:9990"
+
  sonar:
   build: ./sonar
   ports:
