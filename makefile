@@ -1,0 +1,2 @@
+all:
+	asciidoctor index.adoc
