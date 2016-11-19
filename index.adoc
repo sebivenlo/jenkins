@@ -31,7 +31,7 @@ git clone https://github.com/sebivenlo/jenkins.git
 git checkout workshop
 git checkout -f step-0
 
-In case you get stuck during the work, you can simply checkout the repository at a specific step using the following command:
+In case you get stuck during the workshop, you can simply checkout the repository at a specific step using the following command:
 
 [source,bash]
 git checkout -f step-<x>
