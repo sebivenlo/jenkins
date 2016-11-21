@@ -1,9 +1,9 @@
 === Step 5 - Create Jenkins Job
-After we have installed our Jenkins server, lets do something meaningful. Lets create a job for the link:https://github.com/sebivenlo/statemachines[statemachine] project.
+After we have installed our Jenkins server, let's do something meaningful. Let's create a job for the link:https://github.com/sebivenlo/statemachines[statemachine] project.
 
-Therefore, click on the homescreen of the Jenkins site on _New item_ and provide the job with a name like *sebivenlo-mavenstatestack*, chose _Freestyle project_ as project type and click on _save_.
+Therefore, at the homescreen of the Jenkins site click on _New item_ and provide the job with a name like *sebivenlo-mavenstatestack*, choose _Freestyle project_ as project type and click on _Save_.
 
-Now, Jenkins is asking us to configure the job in detail. First of all, we have to chose the right _Source Control Management_ system. Because, the project is available on GitHub, Git is the right one. For the _Repository URL_ we set the link:https://github.com/sebivenlo/statemachines[URL] of the Project.
+Now, Jenkins is asking us to configure the job in detail. First of all, we have to choose the right _Source Control Management_ system. Because the project is available on GitHub, Git is the right one. For the _Repository URL_ we set the link:https://github.com/sebivenlo/statemachines[URL] of the Project.
 
 [source]
 Repository URL = https://github.com/sebivenlo/statemachines/
@@ -14,14 +14,14 @@ Because the project is a public project, we don't need any credentials. So, we c
 .The SCM Configuration
 image::configuration-SCM.png[SCM Configuration]
 
-The last step for the configuration is to tell Jenkins how to build the project. Fortunately, since the project is a Maven project, we only have to tell Jenkins where the pom file is located and which goal should be executed.
+The last step for the configuration is to tell Jenkins how to build the project. Fortunately, since the project is a Maven project, we only have to tell Jenkins where the POM file is located and which goal should be executed.
 
-Therefore, click _add build step_ and chose, _Invoke top-level Maven targets_. Now, chose the Maven version (Maven 3.3.3) which we configured in the preview step and set the maven goals to
+Therefore, click _add build step_ and choose, _Invoke top-level Maven targets_. Now, choose the Maven version (Maven 3.3.3) which we configured in the previous step and set the maven goals to
 
 [source,bash]
 clean test
 
-Afterwards, click on _Advanced_ and specify the location of the pom file which will be executed. This is the relative path in the our repository.
+Afterwards, click on _Advanced_ and specify the location of the POM file which will be executed. This is the relative path in our repository.
 
 [source]
 mavenstatestack/pom.xml
@@ -31,7 +31,7 @@ mavenstatestack/pom.xml
 image::configuration-build.png[Maven Build Configuration]
 
 
-Complete the configuration by clicking on save. So far, so good. Let's have a look whether our fellow students did a great job. If we can build and test the project without any issues, everything is fine :) Therefore, chose the job and click on the _Build Now_ button on the left-hand side. Now, there should be a new item at the _Build History_ list at the bottom. Click on it and check the status. You can have a look at the _Console Output_ as well. The result of the _Console Output_ should look something like this:
+Complete the configuration by clicking on save. So far, so good. Let's have a look whether our fellow students did a great job. If we can build and test the project without any issues, everything is fine :). For that, choose the job and click on the _Build Now_ button on the left-hand side. Now, there should be a new item at the _Build History_ list at the bottom. Click on it and check the status. You can have a look at the _Console Output_ as well. The result of the _Console Output_ should look something like this:
 
 [[img-maven-console-output]]
 .Console Output of Maven Build
