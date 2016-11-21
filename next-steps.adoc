@@ -1,0 +1,15 @@
+Of course, this was not the end of this matter. There are a lot of things to play with. Feel free to extend this workshop.
+At the end, you find some suggestions. But for now, you are able to create a Jenkins server with the help of Docker. You are able to configure simple things manually as well as automatically.
+And of course you got first insights into Continuous Integration (CI) and you further improved your knowledge about Docker.
+
+=== Suggestions
+* Add another service to the pipeline. In the link:https://github.com/sebivenlo/jenkins[main repository] there is already a sonar service configured.
+It would be nice if e.g. a Widfly service will be added.
+* Further configuration of the Jenkins server.
+** User Roles
+** Email notification on failed builds
+** Support for Subversion
+** CRON Jobs
+* Automatic deployments to application server, Nexus etc.
+
+...and much more.

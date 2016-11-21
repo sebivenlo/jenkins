@@ -446,7 +446,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_step_6_automate_jenkins">Step 6 - Automate Jenkins</a></li>
 </ul>
 </li>
-<li><a href="#_next_steps">Next Steps</a></li>
+<li><a href="#_next_steps">Next Steps</a>
+<ul class="sectlevel2">
+<li><a href="#_suggestions">Suggestions</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -738,14 +742,54 @@ The name of this xml file will be the name of the Jenkins job.
 <div class="sect1">
 <h2 id="_next_steps">Next Steps</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>Of course, this was not the end of this matter. There are a lot of things to play with. Feel free to extend this workshop.
+At the end, you find some suggestions. But for now, you are able to create a Jenkins server with the help of Docker. You are able to configure simple things manually as well as automatically.
+And of course you got first insights into Continuous Integration (CI) and you further improved your knowledge about Docker.</p>
+</div>
+<div class="sect2">
+<h3 id="_suggestions">Suggestions</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Add another service to the pipeline. In the <a href="https://github.com/sebivenlo/jenkins">main repository</a> there is already a sonar service configured.
+It would be nice if e.g. a Widfly service will be added.</p>
+</li>
+<li>
+<p>Further configuration of the Jenkins server.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>User Roles</p>
+</li>
+<li>
+<p>Email notification on failed builds</p>
+</li>
+<li>
+<p>Support for Subversion</p>
+</li>
+<li>
+<p>CRON Jobs</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Automatic deployments to application server, Nexus etc.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>&#8230;&#8203;and much more.</p>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2016-11-21 17:48:04 CET
+Last updated 2016-11-21 17:49:30 CET
 </div>
 </div>
 </body>
