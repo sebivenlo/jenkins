@@ -1,0 +1,29 @@
+The practice of Continuous Integration (CI) has gained a large popularity and high importance over the last couple of years. Martin Fowler summarizes what CI is all about:
+
+[[fowler-ci]]
+[quote, Martin Fowler, Continuous Integration]
+____
+Continuous Integration is a software development practice where members of a team integrate their work frequently, usually each person integrates at least daily - leading to multiple integrations per day. Each integration is verified by an automated build (including test) to detect integration errors as quickly as possible.
+____
+
+During this workshop, a simple CI workflow will be created. We will be using link:https://jenkins.io[Jenkins] as the CI tool. After completing the workshop you will be able to perform the following tasks:
+
+* Install and configure Jenkins plugins
+* Create new Jenkins jobs (Git + Maven + JUnit)
+* Automate all of the above using Docker
+
+=== Prerequisites
+You should be familiar with Maven as well as with Docker. Furthermore, you need a running installation of Docker on your machine. Have a look at the link:https://github.com/sebivenlo/dockerstart[dockerstart repository] for a guide on Docker.
+
+=== Setup
+To start with the exercises, clone the workshop repository:
+
+[source,bash]
+git clone https://github.com/sebivenlo/jenkins.git
+git checkout workshop
+git checkout -f step-0
+
+In case you get stuck during the workshop, you can simply checkout the repository at a specific step using the following command:
+
+[source,bash]
+git checkout -f step-<x>
