@@ -437,6 +437,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#_workshop">Workshop</a>
 <ul class="sectlevel2">
+<li><a href="#_step_1_basic_jenkins_set_up">Step 1 - Basic Jenkins set-up</a></li>
+<li><a href="#_step_2_adding_jenkins_plugins">Step 2 - Adding Jenkins plugins</a></li>
+<li><a href="#_step_3_manual_plugin_installation">Step 3 - Manual plugin installation</a></li>
+<li><a href="#_step_4_configuring_maven">Step 4 - Configuring Maven</a></li>
 <li><a href="#_step_5_create_jenkins_job">Step 5 - Create Jenkins Job</a></li>
 </ul>
 </li>
@@ -511,15 +515,60 @@ git checkout -f step-0</code></pre>
 <h2 id="_workshop">Workshop</h2>
 <div class="sectionbody">
 <div class="sect2">
+<h3 id="_step_1_basic_jenkins_set_up">Step 1 - Basic Jenkins set-up</h3>
+<div class="paragraph">
+<p>Start by creating a directory named <code>jenkins</code> in the root of the repository. Inside this folder create a <code>Dockerfile</code>. Inside this file put the contents of this <a href="https://raw.githubusercontent.com/sebivenlo/jenkins/f57e42cc4f16d9bb0620b1d22f01df3c9a62954b/jenkins/Dockerfile">URL</a>. This <code>Dockerfile</code> ensures that an account named <code>jenkins</code> is created and given administrator rights, and also copies the Jenkins configuration file (that will be created next) to the correct folder.</p>
+</div>
+<div class="paragraph">
+<p>Now create a directory inside the <code>jenkins</code> directory, called <code>config</code>. Inside this directory create a file called <code>config.xml</code>, which should contain <a href="https://raw.githubusercontent.com/sebivenlo/jenkins/f57e42cc4f16d9bb0620b1d22f01df3c9a62954b/jenkins/config/config.xml">this</a>. This is a basic configuration for Jenkins with which will be used in this workshop.</p>
+</div>
+<div class="paragraph">
+<p>Finally inside the root directory of the repository, create a <code>docker-compose.yml</code> file. This file will be used to start the Docker container for Jenkins and making it available on port 18080. Give this file the following <a href="https://raw.githubusercontent.com/sebivenlo/jenkins/f57e42cc4f16d9bb0620b1d22f01df3c9a62954b/docker-compose.yml">contents</a>.</p>
+</div>
+<div class="paragraph">
+<p>Now the set-up of Docker containing Jenkins is complete. Verify that Jenkins works by executing the following command in the root of the repository: <code>docker-compose up -d</code>. The <code>-d</code> parameter ensures that Docker starts in a detached / daemon mode, meaning that the current console window is not consumed. If everything goes well, then Jenkins should be accessible at the following URL: <code><a href="http://192.168.99.100:18080">http://&lt;docker-machine ip&gt;:18080</a></code>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_2_adding_jenkins_plugins">Step 2 - Adding Jenkins plugins</h3>
+<div class="paragraph">
+<p>Inside the <code>jenkins</code> directory create a file called <code>plugins.txt</code>. Give the file the following <a href="https://raw.githubusercontent.com/sebivenlo/jenkins/ab81d6138fa8ad643d749e8ef7c60fe9ea015485/jenkins/plugins.txt">contents</a>. This will provide Jenkins with the necessary plugins for this workshop.</p>
+</div>
+<div class="paragraph">
+<p>Now in order to load these plugins, the <code>Dockerfile</code> needs to be changed. Insert the following two lines into the <code>Dockerfile</code>, right before the line where the Jenkins configuration file is being copied:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>COPY plugins.txt /var/jenkins_home/plugins.txt
+RUN /usr/local/bin/install-plugins.sh $(cat /var/jenkins_home/plugins.txt | tr '\r' '' | tr '\n' ' ')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now once more verify that Jenkins is still working by executing <code>docker-compose up -d</code> and visit the URL.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_3_manual_plugin_installation">Step 3 - Manual plugin installation</h3>
+<div class="paragraph">
+<p>Access the Jenkins web-interface by going to <code><a href="http://192.168.99.100:18080">http://&lt;docker-machine ip&gt;:18080</a></code>. On the left-side pane click on <strong>Manage Jenkins</strong>. Then click on <strong>Manage Plugins</strong>. Next select the <strong>Available</strong> tab and then at the top-right enter <code>github</code> into the filter box. Finally check the <strong>GitHub plugin</strong>. Do the same for <code>github-api</code>, <code>git-client</code> and <code>git plugin</code>. After having checked these, at the bottom of the screen click on <strong>Download now and install after restart</strong>. After Jenkins has restarted the plugins should be installed.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_4_configuring_maven">Step 4 - Configuring Maven</h3>
+<div class="paragraph">
+<p>Go back to <strong>Manage Jenkins</strong>. Then click on <strong>Global Tool Configuration</strong>. Next under the <strong>Maven</strong> section, click on the <strong>Maven installations</strong> button. For name and version use <code>Maven 3.3.3</code>. Finally click <strong>Apply</strong> and <strong>Save</strong> at the bottom of the page.</p>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_step_5_create_jenkins_job">Step 5 - Create Jenkins Job</h3>
 <div class="paragraph">
-<p>After we have installed our Jenkins server, lets do something meaningful. Lets create a job for the <a href="https://github.com/sebivenlo/statemachines">statemachine</a> project.</p>
+<p>After we have installed our Jenkins server, let&#8217;s do something meaningful. Let&#8217;s create a job for the <a href="https://github.com/sebivenlo/statemachines">statemachine</a> project.</p>
 </div>
 <div class="paragraph">
-<p>Therefore, click on the homescreen of the Jenkins site on <em>New item</em> and provide the job with a name like <strong>sebivenlo-mavenstatestack</strong>, chose <em>Freestyle project</em> as project type and click on <em>save</em>.</p>
+<p>Therefore, at the homescreen of the Jenkins site click on <em>New item</em> and provide the job with a name like <strong>sebivenlo-mavenstatestack</strong>, choose <em>Freestyle project</em> as project type and click on <em>Save</em>.</p>
 </div>
 <div class="paragraph">
-<p>Now, Jenkins is asking us to configure the job in detail. First of all, we have to chose the right <em>Source Control Management</em> system. Because, the project is available on GitHub, Git is the right one. For the <em>Repository URL</em> we set the <a href="https://github.com/sebivenlo/statemachines">URL</a> of the Project.</p>
+<p>Now, Jenkins is asking us to configure the job in detail. First of all, we have to choose the right <em>Source Control Management</em> system. Because the project is available on GitHub, Git is the right one. For the <em>Repository URL</em> we set the <a href="https://github.com/sebivenlo/statemachines">URL</a> of the Project.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -536,10 +585,10 @@ git checkout -f step-0</code></pre>
 <div class="title">Figure 1. The SCM Configuration</div>
 </div>
 <div class="paragraph">
-<p>The last step for the configuration is to tell Jenkins how to build the project. Fortunately, since the project is a Maven project, we only have to tell Jenkins where the pom file is located and which goal should be executed.</p>
+<p>The last step for the configuration is to tell Jenkins how to build the project. Fortunately, since the project is a Maven project, we only have to tell Jenkins where the POM file is located and which goal should be executed.</p>
 </div>
 <div class="paragraph">
-<p>Therefore, click <em>add build step</em> and chose, <em>Invoke top-level Maven targets</em>. Now, chose the Maven version (Maven 3.3.3) which we configured in the preview step and set the maven goals to</p>
+<p>Therefore, click <em>add build step</em> and choose, <em>Invoke top-level Maven targets</em>. Now, choose the Maven version (Maven 3.3.3) which we configured in the previous step and set the maven goals to</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -547,7 +596,7 @@ git checkout -f step-0</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Afterwards, click on <em>Advanced</em> and specify the location of the pom file which will be executed. This is the relative path in the our repository.</p>
+<p>Afterwards, click on <em>Advanced</em> and specify the location of the POM file which will be executed. This is the relative path in our repository.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -561,7 +610,7 @@ git checkout -f step-0</code></pre>
 <div class="title">Figure 2. Maven Build Configuration</div>
 </div>
 <div class="paragraph">
-<p>Complete the configuration by clicking on save. So far, so good. Let&#8217;s have a look whether our fellow students did a great job. If we can build and test the project without any issues, everything is fine :) Therefore, chose the job and click on the <em>Build Now</em> button on the left-hand side. Now, there should be a new item at the <em>Build History</em> list at the bottom. Click on it and check the status. You can have a look at the <em>Console Output</em> as well. The result of the <em>Console Output</em> should look something like this:</p>
+<p>Complete the configuration by clicking on save. So far, so good. Let&#8217;s have a look whether our fellow students did a great job. If we can build and test the project without any issues, everything is fine :). For that, choose the job and click on the <em>Build Now</em> button on the left-hand side. Now, there should be a new item at the <em>Build History</em> list at the bottom. Click on it and check the status. You can have a look at the <em>Console Output</em> as well. The result of the <em>Console Output</em> should look something like this:</p>
 </div>
 <div id="img-maven-console-output" class="imageblock">
 <div class="content">
@@ -585,7 +634,7 @@ git checkout -f step-0</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2016-11-21 15:27:05 CET
+Last updated 2016-11-21 15:32:17 W. Europe Standard Time
 </div>
 </div>
 </body>

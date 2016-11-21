@@ -11,6 +11,14 @@ v1.0, 2016-11-19
 include::introduction.adoc[]
 
 == Workshop
+include::step-1.adoc[]
+
+include::step-2.adoc[]
+
+include::step-3.adoc[]
+
+include::step-4.adoc[]
+
 include::step-5.adoc[]
 
 == Next Steps

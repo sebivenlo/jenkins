@@ -1,0 +1,9 @@
+=== Step 1 - Basic Jenkins setup
+
+Start by creating a directory named `jenkins` in the root of the repository. Inside this folder create a `Dockerfile`. Inside this file put the contents of this https://raw.githubusercontent.com/sebivenlo/jenkins/f57e42cc4f16d9bb0620b1d22f01df3c9a62954b/jenkins/Dockerfile[URL]. This `Dockerfile` ensures that an account named `jenkins` is created and given administrator rights, and also copies the Jenkins configuration file (that will be created next) to the correct folder.
+
+Now create a directory inside the `jenkins` directory, called `config`. Inside this directory create a file called `config.xml`, which should contain https://raw.githubusercontent.com/sebivenlo/jenkins/f57e42cc4f16d9bb0620b1d22f01df3c9a62954b/jenkins/config/config.xml[this]. This is a basic configuration for Jenkins with which will be used in this workshop.
+
+Finally inside the root directory of the repository, create a `docker-compose.yml` file. This file will be used to start the Docker container for Jenkins and making it available on port 18080. Give this file the following https://raw.githubusercontent.com/sebivenlo/jenkins/f57e42cc4f16d9bb0620b1d22f01df3c9a62954b/docker-compose.yml[contents].
+
+Now the set-up of Docker containing Jenkins is complete. Verify that Jenkins works by executing the following command in the root of the repository: `docker-compose up -d`. The `-d` parameter ensures that Docker starts in a detached / daemon mode, meaning that the current console window is not consumed. If everything goes well, then Jenkins should be accessible at the following URL: `http://192.168.99.100:18080[http://<docker-machine ip>:18080]`.

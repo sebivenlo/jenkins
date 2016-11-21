@@ -1,0 +1,11 @@
+=== Step 2 - Adding Jenkins plugins
+
+Inside the `jenkins` directory create a file called `plugins.txt`. Give the file the following https://raw.githubusercontent.com/sebivenlo/jenkins/ab81d6138fa8ad643d749e8ef7c60fe9ea015485/jenkins/plugins.txt[contents]. This will provide Jenkins with the necessary plugins for this workshop.
+
+Now in order to load these plugins, the `Dockerfile` needs to be changed. Insert the following two lines into the `Dockerfile`, right before the line where the Jenkins configuration file is being copied:
+```
+COPY plugins.txt /var/jenkins_home/plugins.txt
+RUN /usr/local/bin/install-plugins.sh $(cat /var/jenkins_home/plugins.txt | tr '\r' '' | tr '\n' ' ')
+```
+
+Now once more verify that Jenkins is still working by executing `docker-compose up -d` and visit the URL.
