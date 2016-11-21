@@ -1,0 +1,58 @@
+=== Step 6 - Automate Jenkins
+Puhhhhh, this was a lot of work. Hopefully we don't have to do this a second time by hand. Let's automate these things.
+
+First of all, we should add the git plugin. This can by done quite easily by adding the following line to the `jenkins/plugins.txt`:
+
+[source,bash]
+git:3.0.0
+
+Secondly, we have to configure the Maven plugin. Therefore, we will create a `jenkins/config/hudson.tasks.Maven.xml` file and add the following contents to it.
+
+[source,xml]
+<?xml version='1.0' encoding='UTF-8'?>
+<hudson.tasks.Maven_-DescriptorImpl>
+  <installations>
+    <hudson.tasks.Maven_-MavenInstallation>
+      <name>Maven 3.3.3</name>
+      <properties>
+        <hudson.tools.InstallSourceProperty>
+          <installers>
+            <hudson.tasks.Maven_-MavenInstaller>
+              <id>3.3.3</id>
+            </hudson.tasks.Maven_-MavenInstaller>
+          </installers>
+        </hudson.tools.InstallSourceProperty>
+      </properties>
+    </hudson.tasks.Maven_-MavenInstallation>
+  </installations>
+</hudson.tasks.Maven_-DescriptorImpl>
+
+Because, this is just a config file, which is located outside of the Jenkins server, we have to replace the actual config file on the server (`/usr/share/jenkins/ref/hudson.tasks.Maven.xml`), with it. A nice place to do this is in the Dockerfile of the Jenkins server. Add the following line to it:
+
+[source,bash]
+COPY config/hudson.tasks.Maven.xml /usr/share/jenkins/ref/hudson.tasks.Maven.xml
+
+Good job, you have almost finished this workshop. There is only one thing left: we have to automate the creation of the Jenkins job.
+
+Since we already added the job manually, we can reuse it. Therefore, we will connect to the shell of our Docker machine.
+
+[source,bash]
+docker exec -it <container> bash
+
+Navigate to the `~/jobs/<your task name>` folder, put the contents of the *config.xml* into the your clipboard and leave the shell with the following command:
+
+[source,bash]
+exit
+
+CAUTION: If there is no folder inside the *~jobs/* folder, please take https://raw.githubusercontent.com/sebivenlo/jenkins/workshop/jenkins/jobs/1-sebivenlo-mavenstatestack-job.xml[this] file
+
+Afterwards, create a *jobs* folder inside the Jenkins folder and add the content of your clipboard into `jobs/1-sebivenlo-mavenstatestack-job.xml`.
+
+IMPORTANT: The name of this xml file will be the name of the Jenkins job.
+
+Finally we have to copy the job configuration during the creation of the Jenkins container (as we have done with the Maven configuration). Again, the Dockerfile of the Jenkins server is the right place. Add the following line to it:
+
+[source,bash]
+COPY jobs/1-sebivenlo-mavenstatestack-job.xml /usr/share/jenkins/ref/jobs/1-sebivenlo-mavenstatestack-job/config.xml
+
+You did a great job, let's have a look whether everything works. Recreate your Docker container, check if the *1-sebivenlo-mavenstatestack-job* is there and run the build command!

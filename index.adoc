@@ -21,4 +21,6 @@ include::step-4.adoc[]
 
 include::step-5.adoc[]
 
+include::step-6.adoc[]
+
 == Next Steps

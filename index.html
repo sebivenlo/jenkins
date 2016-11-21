@@ -443,6 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_step_3_manual_plugin_installation">Step 3 - Manual plugin installation</a></li>
 <li><a href="#_step_4_configuring_maven">Step 4 - Configuring Maven</a></li>
 <li><a href="#_step_5_create_jenkins_job">Step 5 - Create Jenkins Job</a></li>
+<li><a href="#_step_6_automate_jenkins">Step 6 - Automate Jenkins</a></li>
 </ul>
 </li>
 <li><a href="#_next_steps">Next Steps</a></li>
@@ -629,6 +630,109 @@ RUN /usr/local/bin/install-plugins.sh $(cat /var/jenkins_home/plugins.txt | tr '
 <p>Well done, in this step we learned how we can configure a Jenkins job within the Jenkins environment as well as how we can build the job manually.</p>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_step_6_automate_jenkins">Step 6 - Automate Jenkins</h3>
+<div class="paragraph">
+<p>Puhhhhh, this was a lot of work. Hopefully we don&#8217;t have to do this a second time by hand. Let&#8217;s automate these things.</p>
+</div>
+<div class="paragraph">
+<p>First of all, we should add the git plugin. This can by done quite easily by adding the following line to the <code>jenkins/plugins.txt</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">git:3.0.0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Secondly, we have to configure the Maven plugin. Therefore, we will create a <code>jenkins/config/hudson.tasks.Maven.xml</code> file and add the following contents to it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version='1.0' encoding='UTF-8'?&gt;
+&lt;hudson.tasks.Maven_-DescriptorImpl&gt;
+  &lt;installations&gt;
+    &lt;hudson.tasks.Maven_-MavenInstallation&gt;
+      &lt;name&gt;Maven 3.3.3&lt;/name&gt;
+      &lt;properties&gt;
+        &lt;hudson.tools.InstallSourceProperty&gt;
+          &lt;installers&gt;
+            &lt;hudson.tasks.Maven_-MavenInstaller&gt;
+              &lt;id&gt;3.3.3&lt;/id&gt;
+            &lt;/hudson.tasks.Maven_-MavenInstaller&gt;
+          &lt;/installers&gt;
+        &lt;/hudson.tools.InstallSourceProperty&gt;
+      &lt;/properties&gt;
+    &lt;/hudson.tasks.Maven_-MavenInstallation&gt;
+  &lt;/installations&gt;
+&lt;/hudson.tasks.Maven_-DescriptorImpl&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Because, this is just a config file, which is located outside of the Jenkins server, we have to replace the actual config file on the server (<code>/usr/share/jenkins/ref/hudson.tasks.Maven.xml</code>), with it. A nice place to do this is in the Dockerfile of the Jenkins server. Add the following line to it:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">COPY config/hudson.tasks.Maven.xml /usr/share/jenkins/ref/hudson.tasks.Maven.xml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Good job, you have almost finished this workshop. There is only one thing left: we have to automate the creation of the Jenkins job.</p>
+</div>
+<div class="paragraph">
+<p>Since we already added the job manually, we can reuse it. Therefore, we will connect to the shell of our Docker machine.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">docker exec -it &lt;container&gt; bash</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Navigate to the <code>~/jobs/&lt;your task name&gt;</code> folder, put the contents of the <strong>config.xml</strong> into the your clipboard and leave the shell with the following command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">exit</code></pre>
+</div>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Caution</div>
+</td>
+<td class="content">
+If there is no folder inside the <strong>~jobs/</strong> folder, please take <a href="https://raw.githubusercontent.com/sebivenlo/jenkins/workshop/jenkins/jobs/1-sebivenlo-mavenstatestack-job.xml">this</a> file
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Afterwards, create a <strong>jobs</strong> folder inside the Jenkins folder and add the content of your clipboard into <code>jobs/1-sebivenlo-mavenstatestack-job.xml</code>.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+The name of this xml file will be the name of the Jenkins job.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Finally we have to copy the job configuration during the creation of the Jenkins container (as we have done with the Maven configuration). Again, the Dockerfile of the Jenkins server is the right place. Add the following line to it:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">COPY jobs/1-sebivenlo-mavenstatestack-job.xml /usr/share/jenkins/ref/jobs/1-sebivenlo-mavenstatestack-job/config.xml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You did a great job, let&#8217;s have a look whether everything works. Recreate your Docker container, check if the <strong>1-sebivenlo-mavenstatestack-job</strong> is there and run the build command!</p>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -641,7 +745,7 @@ RUN /usr/local/bin/install-plugins.sh $(cat /var/jenkins_home/plugins.txt | tr '
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2016-11-21 16:40:29 CET
+Last updated 2016-11-21 17:48:04 CET
 </div>
 </div>
 </body>
