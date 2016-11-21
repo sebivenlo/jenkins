@@ -27,3 +27,6 @@ In case you get stuck during the workshop, you can simply checkout the repositor
 
 [source,bash]
 git checkout -f step-<x>
+
+=== Docker Cheat Sheet
+During the workshop, you will be using quite a few docker commands. We added a link:docker-cheat-sheet/docker-cheat-sheet.html[cheat sheet] containing all the commands that you might need during the workshop.
