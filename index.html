@@ -435,7 +435,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_setup">Setup</a></li>
 </ul>
 </li>
-<li><a href="#_workshop">Workshop</a></li>
+<li><a href="#_workshop">Workshop</a>
+<ul class="sectlevel2">
+<li><a href="#_step_5_create_jenkins_job">Step 5 - Create Jenkins Job</a></li>
+</ul>
+</li>
 <li><a href="#_next_steps">Next Steps</a></li>
 </ul>
 </div>
@@ -506,7 +510,69 @@ git checkout -f step-0</code></pre>
 <div class="sect1">
 <h2 id="_workshop">Workshop</h2>
 <div class="sectionbody">
-
+<div class="sect2">
+<h3 id="_step_5_create_jenkins_job">Step 5 - Create Jenkins Job</h3>
+<div class="paragraph">
+<p>After we have installed our Jenkins server, lets do something meaningful. Lets create a job for the <a href="https://github.com/sebivenlo/statemachines">statemachine</a> project.</p>
+</div>
+<div class="paragraph">
+<p>Therefore, click on the homescreen of the Jenkins site on <em>New item</em> and provide the job with a name like <strong>sebivenlo-mavenstatestack</strong>, chose <em>Freestyle project</em> as project type and click on <em>save</em>.</p>
+</div>
+<div class="paragraph">
+<p>Now, Jenkins is asking us to configure the job in detail. First of all, we have to chose the right <em>Source Control Management</em> system. Because, the project is available on GitHub, Git is the right one. For the <em>Repository URL</em> we set the <a href="https://github.com/sebivenlo/statemachines">URL</a> of the Project.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>Repository URL = https://github.com/sebivenlo/statemachines/</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Because the project is a public project, we don&#8217;t need any credentials. So, we can skip it. The other settings in the SCM section can remain at their default values.</p>
+</div>
+<div id="img-scm-configuration" class="imageblock">
+<div class="content">
+<img src="figures/configuration-SCM.png" alt="SCM Configuration">
+</div>
+<div class="title">Figure 1. The SCM Configuration</div>
+</div>
+<div class="paragraph">
+<p>The last step for the configuration is to tell Jenkins how to build the project. Fortunately, since the project is a Maven project, we only have to tell Jenkins where the pom file is located and which goal should be executed.</p>
+</div>
+<div class="paragraph">
+<p>Therefore, click <em>add build step</em> and chose, <em>Invoke top-level Maven targets</em>. Now, chose the Maven version (Maven 3.3.3) which we configured in the preview step and set the maven goals to</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">clean test</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Afterwards, click on <em>Advanced</em> and specify the location of the pom file which will be executed. This is the relative path in the our repository.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>mavenstatestack/pom.xml</code></pre>
+</div>
+</div>
+<div id="img-maven-build-configuration" class="imageblock">
+<div class="content">
+<img src="figures/configuration-build.png" alt="Maven Build Configuration">
+</div>
+<div class="title">Figure 2. Maven Build Configuration</div>
+</div>
+<div class="paragraph">
+<p>Complete the configuration by clicking on save. So far, so good. Let&#8217;s have a look whether our fellow students did a great job. If we can build and test the project without any issues, everything is fine :) Therefore, chose the job and click on the <em>Build Now</em> button on the left-hand side. Now, there should be a new item at the <em>Build History</em> list at the bottom. Click on it and check the status. You can have a look at the <em>Console Output</em> as well. The result of the <em>Console Output</em> should look something like this:</p>
+</div>
+<div id="img-maven-console-output" class="imageblock">
+<div class="content">
+<img src="figures/console-result.png" alt="Console Output">
+</div>
+<div class="title">Figure 3. Console Output of Maven Build</div>
+</div>
+<div class="paragraph">
+<p>Well done, in this step we learned how we can configure a Jenkins job within the Jenkins environment as well as how we can build the job manually.</p>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -519,7 +585,7 @@ git checkout -f step-0</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2016-11-21 15:00:19 CET
+Last updated 2016-11-21 15:27:05 CET
 </div>
 </div>
 </body>

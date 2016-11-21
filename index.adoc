@@ -1,6 +1,8 @@
 :toc:
 :toc-position: right
 
+:imagesdir: figures
+
 = JEE - Jenkins Workshop
 Holger Kemper, Jan Trienes, Paul van Veghel
 v1.0, 2016-11-19
@@ -9,7 +11,6 @@ v1.0, 2016-11-19
 include::introduction.adoc[]
 
 == Workshop
-// include::ex-01.adoc[]
-// ...
+include::step-5.adoc[]
 
 == Next Steps
