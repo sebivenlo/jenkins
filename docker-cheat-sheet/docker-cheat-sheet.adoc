@@ -1,0 +1,70 @@
+:source-highlighter: pygments
+
+// Hide document title when rendered as pdf.
+ifdef::backend-pdf[:notitle:]
+
+= Docker Cheat Sheet
+Holger Kemper, Jan Trienes, Paul van Veghel
+Version 1.0, 2016-11-21
+
+== Docker Machine
+To start a docker machine:
+[source,bash]
+docker-machine start
+
+To stop a docker machine:
+[source,bash]
+docker-machine stop
+
+Show IP address of default docker machine:
+[source,bash]
+docker-machine ip default
+
+Connect to docker daemon:
+[source,bash]
+eval $(docker-machine env)
+
+Connect to docker daemon (Windows equivalent):
+[source,bat]
+@FOR /f "tokens=*" %i IN ('docker-machine env') DO @%i
+
+== Docker Compose
+To build docker-compose file. Images will be downloaded and containers will be created as specified.
+[source,bash]
+docker-compose build
+
+Start the docker containers.
+[source,bash]
+docker-compose up -d
+
+<<<
+
+== Docker Container
+To start a docker container:
+[source,bash]
+docker start <container>
+
+To stop a docker container:
+[source,bash]
+docker stop <container>
+
+Delete a docker container by ID. Force (-f) enables one to delete a running container. You can pass multiple container IDs.
+[source,bash]
+docker rm -f <containers>
+
+Show all IDs of running and stopped containers.
+[source,bash]
+docker ps -aq
+
+Connect to a shell in the docker container and execute the command.
+[source,bash]
+docker exec -it <container> <command>
+
+== Docker Images
+Show all IDs of docker images.
+[source,bash]
+docker images -aq
+
+Delete docker images by ID. Force (-f) enables one to delete an image although others depend on it. You can pass multiple image IDs.
+[source,bash]
+docker rmi -f <images>
