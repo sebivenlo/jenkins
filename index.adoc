@@ -2,6 +2,9 @@
 :toc-position: right
 
 :imagesdir: figures
+:source-highlighter: coderay
+
+:icons: font
 
 = JEE - Jenkins Workshop
 Holger Kemper, Jan Trienes, Paul van Veghel
