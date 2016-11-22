@@ -1,9 +1,57 @@
 === Step 1 - Basic Jenkins setup
 
-Start by creating a directory named `jenkins` in the root of the repository. Inside this folder create a `Dockerfile`. Inside this file put the contents of this https://raw.githubusercontent.com/sebivenlo/jenkins/f57e42cc4f16d9bb0620b1d22f01df3c9a62954b/jenkins/Dockerfile[URL]. This `Dockerfile` ensures that an account named `jenkins` is created and given administrator rights, and also copies the Jenkins configuration file (that will be created next) to the correct folder.
+Let's start by creating a basic setup to run Jenkins within Docker. First off let's create a directory in the root of the repository called `jenkins`. Inside this folder we are going to create a `Dockerfile`. Now let's give this file the following contents:
+```
+FROM jenkins:2.7.4
 
-Now create a directory inside the `jenkins` directory, called `config`. Inside this directory create a file called `config.xml`, which should contain https://raw.githubusercontent.com/sebivenlo/jenkins/f57e42cc4f16d9bb0620b1d22f01df3c9a62954b/jenkins/config/config.xml[this]. This is a basic configuration for Jenkins with which will be used in this workshop.
+USER root
+RUN apt-get update \
+      && apt-get install -y sudo curl\
+      && rm -rf /var/lib/apt/lists/*
+RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
+RUN curl -sSL -O https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz && tar -xvzf docker-latest.tgz
+RUN mv docker/* /usr/bin/
 
-Finally inside the root directory of the repository, create a `docker-compose.yml` file. This file will be used to start the Docker container for Jenkins and making it available on port 18080. Give this file the following https://raw.githubusercontent.com/sebivenlo/jenkins/f57e42cc4f16d9bb0620b1d22f01df3c9a62954b/docker-compose.yml[contents].
+USER jenkins
 
-Now the set-up of Docker containing Jenkins is complete. Verify that Jenkins works by executing the following command in the root of the repository: `docker-compose up -d`. The `-d` parameter ensures that Docker starts in a detached / daemon mode, meaning that the current console window is not consumed. If everything goes well, then Jenkins should be accessible at the following URL: `http://192.168.99.100:18080[http://<docker-machine ip>:18080]`.
+COPY config/config.xml /usr/share/jenkins/ref/config.xml
+```
+This `Dockerfile` ensures that an account, named `jenkins`, is created and given administrator rights, and also copies the Jenkins configuration file (that we will create next) to the correct folder.
+
+Now we are going to create a `config` directory inside the `jenkins` directory. Inside this directory create a file called `config.xml`, with  https://raw.githubusercontent.com/sebivenlo/jenkins/f57e42cc4f16d9bb0620b1d22f01df3c9a62954b/jenkins/config/config.xml[this] content. This file contains the basic configuration for Jenkins which will be used throughout this workshop.
+
+Finally inside the root directory, we will create a `docker-compose.yml` file. This file is used to start the Jenkins' Docker container and exposing it on port 18080. We will give the file the following contents:
+```
+version: '2'
+
+networks:
+  prodnetwork:
+    driver: bridge
+
+services:
+ jenkins:
+  build: ./jenkins
+  ports:
+    - "18080:8080"
+  networks:
+    - prodnetwork
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - /usr/local/bin/docker:/usr/bin/docker
+    - /opt/jenkins/:/var/lib/jenkins
+```
+
+Now that we created all of these files and directories, we should have something like this:
+```
+.
+├── LICENSE
+├── README.md
+├── docker-compose.yml
+└── jenkins
+    ├── Dockerfile
+    └── config
+        └── config.xml
+```
+
+
+Let's verify that Jenkins is working by executing the following command inside the root of the repository: `docker-compose up -d`. The `-d` parameter ensures that Docker starts in a detached / daemon mode, meaning that the current console window is not consumed. If everything went well, then Jenkins should be accessible at the following URL: `http://docker:18080`.

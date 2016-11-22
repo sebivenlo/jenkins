@@ -1,3 +1,7 @@
 === Step 4 - Configuring Maven
 
-Go back to *Manage Jenkins*. Then click on *Global Tool Configuration*. Next under the *Maven* section, click on the *Maven installations* button. For name and version use `Maven 3.3.3`. Finally click *Apply* and *Save* at the bottom of the page.
+Let's now configure Maven, so that we can use it for dependency management for our applications that we want to build and deploy.
+
+Go back to *Manage Jenkins* and click on *Global Tool Configuration*. Next under the *Maven* section, click on the *Maven installations* button. For name and version just use `Maven 3.3.3`. Finally click *Apply* and *Save* at the bottom of the page.
+
+Maven should now be configured and ready for use!

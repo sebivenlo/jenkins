@@ -621,46 +621,118 @@ git checkout -f step-0</code></pre>
 <div class="sect2">
 <h3 id="_step_1_basic_jenkins_setup">Step 1 - Basic Jenkins setup</h3>
 <div class="paragraph">
-<p>Start by creating a directory named <code>jenkins</code> in the root of the repository. Inside this folder create a <code>Dockerfile</code>. Inside this file put the contents of this <a href="https://raw.githubusercontent.com/sebivenlo/jenkins/f57e42cc4f16d9bb0620b1d22f01df3c9a62954b/jenkins/Dockerfile">URL</a>. This <code>Dockerfile</code> ensures that an account named <code>jenkins</code> is created and given administrator rights, and also copies the Jenkins configuration file (that will be created next) to the correct folder.</p>
+<p>Let&#8217;s start by creating a basic setup to run Jenkins within Docker. First off let&#8217;s create a directory in the root of the repository called <code>jenkins</code>. Inside this folder we are going to create a <code>Dockerfile</code>. Now let&#8217;s give this file the following contents:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>FROM jenkins:2.7.4
+
+USER root
+RUN apt-get update \
+      &amp;&amp; apt-get install -y sudo curl\
+      &amp;&amp; rm -rf /var/lib/apt/lists/*
+RUN echo "jenkins ALL=NOPASSWD: ALL" &gt;&gt; /etc/sudoers
+RUN curl -sSL -O https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz &amp;&amp; tar -xvzf docker-latest.tgz
+RUN mv docker/* /usr/bin/
+
+USER jenkins
+
+COPY config/config.xml /usr/share/jenkins/ref/config.xml</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>Now create a directory inside the <code>jenkins</code> directory, called <code>config</code>. Inside this directory create a file called <code>config.xml</code>, which should contain <a href="https://raw.githubusercontent.com/sebivenlo/jenkins/f57e42cc4f16d9bb0620b1d22f01df3c9a62954b/jenkins/config/config.xml">this</a>. This is a basic configuration for Jenkins with which will be used in this workshop.</p>
+<p>This <code>Dockerfile</code> ensures that an account, named <code>jenkins</code>, is created and given administrator rights, and also copies the Jenkins configuration file (that we will create next) to the correct folder.</p>
 </div>
 <div class="paragraph">
-<p>Finally inside the root directory of the repository, create a <code>docker-compose.yml</code> file. This file will be used to start the Docker container for Jenkins and making it available on port 18080. Give this file the following <a href="https://raw.githubusercontent.com/sebivenlo/jenkins/f57e42cc4f16d9bb0620b1d22f01df3c9a62954b/docker-compose.yml">contents</a>.</p>
+<p>Now we are going to create a <code>config</code> directory inside the <code>jenkins</code> directory. Inside this directory create a file called <code>config.xml</code>, with  <a href="https://raw.githubusercontent.com/sebivenlo/jenkins/f57e42cc4f16d9bb0620b1d22f01df3c9a62954b/jenkins/config/config.xml">this</a> content. This file contains the basic configuration for Jenkins which will be used throughout this workshop.</p>
 </div>
 <div class="paragraph">
-<p>Now the set-up of Docker containing Jenkins is complete. Verify that Jenkins works by executing the following command in the root of the repository: <code>docker-compose up -d</code>. The <code>-d</code> parameter ensures that Docker starts in a detached / daemon mode, meaning that the current console window is not consumed. If everything goes well, then Jenkins should be accessible at the following URL: <code><a href="http://192.168.99.100:18080">http://&lt;docker-machine ip&gt;:18080</a></code>.</p>
+<p>Finally inside the root directory, we will create a <code>docker-compose.yml</code> file. This file is used to start the Jenkins' Docker container and exposing it on port 18080. We will give the file the following contents:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>version: '2'
+
+networks:
+  prodnetwork:
+    driver: bridge
+
+services:
+ jenkins:
+  build: ./jenkins
+  ports:
+    - "18080:8080"
+  networks:
+    - prodnetwork
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - /usr/local/bin/docker:/usr/bin/docker
+    - /opt/jenkins/:/var/lib/jenkins</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now that we created all of these files and directories, we should have something like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>.
+├── LICENSE
+├── README.md
+├── docker-compose.yml
+└── jenkins
+    ├── Dockerfile
+    └── config
+        └── config.xml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s verify that Jenkins is working by executing the following command inside the root of the repository: <code>docker-compose up -d</code>. The <code>-d</code> parameter ensures that Docker starts in a detached / daemon mode, meaning that the current console window is not consumed. If everything went well, then Jenkins should be accessible at the following URL: <code><a href="http://docker:18080" class="bare">http://docker:18080</a></code>.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_step_2_adding_jenkins_plugins">Step 2 - Adding Jenkins plugins</h3>
 <div class="paragraph">
-<p>Inside the <code>jenkins</code> directory create a file called <code>plugins.txt</code>. Give the file the following <a href="https://raw.githubusercontent.com/sebivenlo/jenkins/ab81d6138fa8ad643d749e8ef7c60fe9ea015485/jenkins/plugins.txt">contents</a>. This will provide Jenkins with the necessary plugins for this workshop.</p>
+<p>Ok, now we are going to add a file containing some plugins, which will be loaded automatically by Jenkins.
+Create a <code>plugins.txt</code> file inside the <code>jenkins</code> directory. Now let&#8217;s populate it with a bunch of <a href="https://raw.githubusercontent.com/sebivenlo/jenkins/ab81d6138fa8ad643d749e8ef7c60fe9ea015485/jenkins/plugins.txt">plugins</a>, which we will need during this workshop.</p>
 </div>
 <div class="paragraph">
-<p>Now in order to load these plugins, the <code>Dockerfile</code> needs to be changed. Insert the following two lines into the <code>Dockerfile</code>, right before the line where the Jenkins configuration file is being copied:</p>
+<p>When we create the Jenkins container, we now also need to ensure that Jenkins knows about the plugins that we just defined. In order to do that, we need to move the plugins file to <code>/usr/local/bin/install-plugins.sh</code>. So let&#8217;s add that to our <code>Dockerfile</code>. Insert the following two lines <strong>before</strong> the last line of our <code>Dockerfile</code>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code>COPY plugins.txt /var/jenkins_home/plugins.txt
-RUN /usr/local/bin/install-plugins.sh $(cat /var/jenkins_home/plugins.txt | tr '\r' '' | tr '\n' ' ')</code></pre>
+RUN /usr/local/bin/install-plugins.sh $(cat /var/jenkins_home/plugins.txt | tr -d '\r' | tr '\n' ' ')</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Now once more verify that Jenkins is still working by executing <code>docker-compose up -d</code> and visit the URL.</p>
+<p>Now once more let&#8217;s verify that Jenkins is still working by executing <code>docker-compose up -d</code> and visit the URL.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_step_3_manual_plugin_installation">Step 3 - Manual plugin installation</h3>
 <div class="paragraph">
-<p>Access the Jenkins web-interface by going to <code><a href="http://192.168.99.100:18080">http://&lt;docker-machine ip&gt;:18080</a></code>. On the left-side pane click on <strong>Manage Jenkins</strong>. Then click on <strong>Manage Plugins</strong>. Next select the <strong>Available</strong> tab and then at the top-right enter <code>github</code> into the filter box. Finally check the <strong>GitHub plugin</strong>. Do the same for <code>github-api</code>, <code>git-client</code> and <code>git plugin</code>. After having checked these, at the bottom of the screen click on <strong>Download now and install after restart</strong>. After Jenkins has restarted the plugins should be installed.</p>
+<p>In this step we are going to use Jenkins' web interface to manually add some plugins.</p>
+</div>
+<div class="paragraph">
+<p>So let&#8217;s start by accessing the Jenkins web-interface by going to <code><a href="http://docker:18080" class="bare">http://docker:18080</a></code>. On the left-side pane click on <strong>Manage Jenkins</strong>. Then click on <strong>Manage Plugins</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Navigate to the <strong>Available</strong> tab and at the top-right enter <code>github</code> into the filter box. Finally check the <strong>GitHub plugin</strong>. Do the same for <code>github-api</code>, <code>git-client</code> and <code>git plugin</code>.</p>
+</div>
+<div class="paragraph">
+<p>After having checked these, at the bottom of the screen click on <strong>Download now and install after restart</strong>. After Jenkins has restarted the plugins should be installed.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_step_4_configuring_maven">Step 4 - Configuring Maven</h3>
 <div class="paragraph">
-<p>Go back to <strong>Manage Jenkins</strong>. Then click on <strong>Global Tool Configuration</strong>. Next under the <strong>Maven</strong> section, click on the <strong>Maven installations</strong> button. For name and version use <code>Maven 3.3.3</code>. Finally click <strong>Apply</strong> and <strong>Save</strong> at the bottom of the page.</p>
+<p>Let&#8217;s now configure Maven, so that we can use it for dependency management for our applications that we want to build and deploy.</p>
+</div>
+<div class="paragraph">
+<p>Go back to <strong>Manage Jenkins</strong> and click on <strong>Global Tool Configuration</strong>. Next under the <strong>Maven</strong> section, click on the <strong>Maven installations</strong> button. For name and version just use <code>Maven 3.3.3</code>. Finally click <strong>Apply</strong> and <strong>Save</strong> at the bottom of the page.</p>
+</div>
+<div class="paragraph">
+<p>Maven should now be configured and ready for use!</p>
 </div>
 </div>
 <div class="sect2">
@@ -881,7 +953,7 @@ It would be nice if e.g. a Widfly service will be added.</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2016-11-21 18:00:06 CET
+Last updated 2016-11-22 09:03:18 W. Europe Standard Time
 </div>
 </div>
 </body>

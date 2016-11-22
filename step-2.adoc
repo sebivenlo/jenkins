@@ -1,11 +1,12 @@
 === Step 2 - Adding Jenkins plugins
 
-Inside the `jenkins` directory create a file called `plugins.txt`. Give the file the following https://raw.githubusercontent.com/sebivenlo/jenkins/ab81d6138fa8ad643d749e8ef7c60fe9ea015485/jenkins/plugins.txt[contents]. This will provide Jenkins with the necessary plugins for this workshop.
+Ok, now we are going to add a file containing some plugins, which will be loaded automatically by Jenkins.
+Create a `plugins.txt` file inside the `jenkins` directory. Now let's populate it with a bunch of https://raw.githubusercontent.com/sebivenlo/jenkins/ab81d6138fa8ad643d749e8ef7c60fe9ea015485/jenkins/plugins.txt[plugins], which we will need during this workshop.
 
-Now in order to load these plugins, the `Dockerfile` needs to be changed. Insert the following two lines into the `Dockerfile`, right before the line where the Jenkins configuration file is being copied:
+When we create the Jenkins container, we now also need to ensure that Jenkins knows about the plugins that we just defined. In order to do that, we need to move the plugins file to `/usr/local/bin/install-plugins.sh`. So let's add that to our `Dockerfile`. Insert the following two lines *before* the last line of our `Dockerfile`:
 ```
 COPY plugins.txt /var/jenkins_home/plugins.txt
-RUN /usr/local/bin/install-plugins.sh $(cat /var/jenkins_home/plugins.txt | tr '\r' '' | tr '\n' ' ')
+RUN /usr/local/bin/install-plugins.sh $(cat /var/jenkins_home/plugins.txt | tr -d '\r' | tr '\n' ' ')
 ```
 
-Now once more verify that Jenkins is still working by executing `docker-compose up -d` and visit the URL.
+Now once more let's verify that Jenkins is still working by executing `docker-compose up -d` and visit the URL.
