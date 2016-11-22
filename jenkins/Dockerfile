@@ -18,7 +18,8 @@ USER jenkins
 
 # installing specific list of plugins. see: https://github.com/jenkinsci/docker#preinstalling-plugins
 COPY plugins.txt /var/jenkins_home/plugins.txt
-RUN /usr/local/bin/plugins.sh /var/jenkins_home/plugins.txt
+RUN /usr/local/bin/install-plugins.sh $(cat /var/jenkins_home/plugins.txt | tr '\r' '' | tr '\n' ' ')
+
 
 # Adding default Jenkins Jobs
 COPY jobs/1-selenium2-clone-job.xml /usr/share/jenkins/ref/jobs/1-selenium2-clone-job/config.xml
