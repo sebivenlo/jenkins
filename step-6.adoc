@@ -39,7 +39,7 @@ Since we already added the job manually, we can reuse it. Therefore, we will con
 [source,bash]
 docker exec -it <container> bash
 
-Navigate to the `~/jobs/<your task name>` folder, put the contents of the *config.xml* into the your clipboard and leave the shell with the following command:
+Navigate to the `~/jobs/<your task name>` folder, put the contents of the *config.xml* into your clipboard and leave the shell with the following command:
 
 [source,bash]
 exit
