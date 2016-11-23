@@ -55,4 +55,20 @@ Finally we have to copy the job configuration during the creation of the Jenkins
 [source,bash]
 COPY jobs/1-sebivenlo-mavenstatestack-job.xml /usr/share/jenkins/ref/jobs/1-sebivenlo-mavenstatestack-job/config.xml
 
+If everything went according to plan we should have the following file structure:
+```
+.
+├── LICENSE
+├── README.md
+├── docker-compose.yml
+└── jenkins
+    ├── Dockerfile
+    ├── config
+    │   ├── config.xml
+    │   └── hudson.tasks.Maven.xml
+    ├── jobs
+    │   └── 1-sebivenlo-mavenstatestack-job.xml
+    └── plugins.txt
+```
+
 You did a great job, let's have a look whether everything works. Recreate your Docker container, check if the *1-sebivenlo-mavenstatestack-job* is there and run the build command!

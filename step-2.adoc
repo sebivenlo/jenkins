@@ -1,7 +1,7 @@
 === Step 2 - Adding Jenkins plugins
 
 Ok, now we are going to add a file containing some plugins, which will be loaded automatically by Jenkins.
-Create a `plugins.txt` file inside the `jenkins` directory. Now let's populate it with a bunch of https://raw.githubusercontent.com/sebivenlo/jenkins/ab81d6138fa8ad643d749e8ef7c60fe9ea015485/jenkins/plugins.txt[plugins], which we will need during this workshop.
+Create a `plugins.txt` file inside the `jenkins` directory. Now let's populate it with a bunch of https://raw.githubusercontent.com/sebivenlo/jenkins/b0ff6783bbfee331e2725ba0b1852a2693c4c614/jenkins/plugins.txt[plugins], which we will need during this workshop.
 
 When we create the Jenkins container, we now also need to ensure that Jenkins knows about the plugins that we just defined. In order to do that, we need to move the plugins file to `/usr/local/bin/install-plugins.sh`. So let's add that to our `Dockerfile`. Insert the following two lines *before* the last line of our `Dockerfile`:
 ```
@@ -9,4 +9,4 @@ COPY plugins.txt /var/jenkins_home/plugins.txt
 RUN /usr/local/bin/install-plugins.sh $(cat /var/jenkins_home/plugins.txt | tr -d '\r' | tr '\n' ' ')
 ```
 
-Now once more let's verify that Jenkins is still working by executing `docker-compose up -d` and visit the URL.
+Since that we changed the Docker configuration, we need to rebuild the image for Jenkins. Let's first remove the Jenkins container. Use `docker ps -a` to get the names and ID's of all the containers for the current Docker machine. Next remove the container by using the following command: `docker rm -f <jenkins container id>`. Now we have to recreate the image by doing `docker-compose build`, followed by a `docker-compose up -d`. These changes should now be applied to our Jenkins environment.

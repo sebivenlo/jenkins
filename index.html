@@ -693,7 +693,7 @@ services:
 <h3 id="_step_2_adding_jenkins_plugins">Step 2 - Adding Jenkins plugins</h3>
 <div class="paragraph">
 <p>Ok, now we are going to add a file containing some plugins, which will be loaded automatically by Jenkins.
-Create a <code>plugins.txt</code> file inside the <code>jenkins</code> directory. Now let&#8217;s populate it with a bunch of <a href="https://raw.githubusercontent.com/sebivenlo/jenkins/ab81d6138fa8ad643d749e8ef7c60fe9ea015485/jenkins/plugins.txt">plugins</a>, which we will need during this workshop.</p>
+Create a <code>plugins.txt</code> file inside the <code>jenkins</code> directory. Now let&#8217;s populate it with a bunch of <a href="https://raw.githubusercontent.com/sebivenlo/jenkins/b0ff6783bbfee331e2725ba0b1852a2693c4c614/jenkins/plugins.txt">plugins</a>, which we will need during this workshop.</p>
 </div>
 <div class="paragraph">
 <p>When we create the Jenkins container, we now also need to ensure that Jenkins knows about the plugins that we just defined. In order to do that, we need to move the plugins file to <code>/usr/local/bin/install-plugins.sh</code>. So let&#8217;s add that to our <code>Dockerfile</code>. Insert the following two lines <strong>before</strong> the last line of our <code>Dockerfile</code>:</p>
@@ -705,7 +705,7 @@ RUN /usr/local/bin/install-plugins.sh $(cat /var/jenkins_home/plugins.txt | tr -
 </div>
 </div>
 <div class="paragraph">
-<p>Now once more let&#8217;s verify that Jenkins is still working by executing <code>docker-compose up -d</code> and visit the URL.</p>
+<p>Since that we changed the Docker configuration, we need to rebuild the image for Jenkins. Let&#8217;s first remove the Jenkins container. Use <code>docker ps -a</code> to get the names and ID&#8217;s of all the containers for the current Docker machine. Next remove the container by using the following command: <code>docker rm -f &lt;jenkins container id&gt;</code>. Now we have to recreate the image by doing <code>docker-compose build</code>, followed by a <code>docker-compose up -d</code>. These changes should now be applied to our Jenkins environment.</p>
 </div>
 </div>
 <div class="sect2">
@@ -898,6 +898,25 @@ The name of this xml file will be the name of the Jenkins job.
 </div>
 </div>
 <div class="paragraph">
+<p>If everything went according to plan we should have the following file structure:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code>.
+├── LICENSE
+├── README.md
+├── docker-compose.yml
+└── jenkins
+    ├── Dockerfile
+    ├── config
+    │   ├── config.xml
+    │   └── hudson.tasks.Maven.xml
+    ├── jobs
+    │   └── 1-sebivenlo-mavenstatestack-job.xml
+    └── plugins.txt</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>You did a great job, let&#8217;s have a look whether everything works. Recreate your Docker container, check if the <strong>1-sebivenlo-mavenstatestack-job</strong> is there and run the build command!</p>
 </div>
 </div>
@@ -953,7 +972,7 @@ It would be nice if e.g. a Widfly service will be added.</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2016-11-22 09:03:18 W. Europe Standard Time
+Last updated 2016-11-23 15:13:12 W. Europe Standard Time
 </div>
 </div>
 </body>
