@@ -1,7 +1,16 @@
 === Step 2 - Adding Jenkins plugins
 
 Ok, now we are going to add a file containing some plugins, which will be loaded automatically by Jenkins.
-Create a `plugins.txt` file inside the `jenkins` directory. Now let's populate it with a bunch of https://raw.githubusercontent.com/sebivenlo/jenkins/b0ff6783bbfee331e2725ba0b1852a2693c4c614/jenkins/plugins.txt[plugins], which we will need during this workshop.
+Create a `plugins.txt` file inside the `jenkins` directory. Now let's
+populate it with a bunch of
+https://raw.githubusercontent.com/sebivenlo/jenkins/b0ff6783bbfee331e2725ba0b1852a2693c4c614/jenkins/plugins.txt[plugins],
+which we will need during this workshop.
+
+[NOTE]
+If you have a browser plugin
+to render your adoc pages, you may want to download (right-click,
+download) the plugins.text file instead of opening it with the browser, because said plugin will
+almost certainly mess up the text.
 
 When we create the Jenkins container, we now also need to ensure that Jenkins knows about the plugins that we just defined. In order to do that, we need to move the plugins file to `/usr/local/bin/install-plugins.sh`. So let's add that to our `Dockerfile`. Insert the following two lines *before* the last line of our `Dockerfile`:
 ```

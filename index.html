@@ -594,6 +594,7 @@ table.CodeRay td.code>pre{padding:0}
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="bash">git clone https://github.com/sebivenlo/jenkins.git
+cd jenkins
 git checkout workshop
 git checkout -f step-0</code></pre>
 </div>
@@ -647,7 +648,7 @@ COPY config/config.xml /usr/share/jenkins/ref/config.xml</code></pre>
 <p>Now we are going to create a <code>config</code> directory inside the <code>jenkins</code> directory. Inside this directory create a file called <code>config.xml</code>, with  <a href="https://raw.githubusercontent.com/sebivenlo/jenkins/f57e42cc4f16d9bb0620b1d22f01df3c9a62954b/jenkins/config/config.xml">this</a> content. This file contains the basic configuration for Jenkins which will be used throughout this workshop.</p>
 </div>
 <div class="paragraph">
-<p>Finally inside the root directory, we will create a <code>docker-compose.yml</code> file. This file is used to start the Jenkins' Docker container and exposing it on port 18080. We will give the file the following contents:</p>
+<p>Finally inside the projects root directory, we will create a <code>docker-compose.yml</code> file. This file is used to start the Jenkins' Docker container and exposing it on port 18080. We will give the file the following contents:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -670,8 +671,23 @@ services:
     - /opt/jenkins/:/var/lib/jenkins</code></pre>
 </div>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+For now, linux users may leave the volumes part out. This currently
+appears to work only under Mac OS-X and windows, because of the
+virtualisation that is used in those cases.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
-<p>Now that we created all of these files and directories, we should have something like this:</p>
+<p>Now that we created all of these files and directories, we should have
+something like this (created with the <code>tree</code>-command):</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -686,6 +702,10 @@ services:
 </div>
 </div>
 <div class="paragraph">
+<p>The order in your output may differ, that is no problem. However, make
+sure the <code>config.xml</code> file lives in the directory <code>config</code>.</p>
+</div>
+<div class="paragraph">
 <p>Let&#8217;s verify that Jenkins is working by executing the following command inside the root of the repository: <code>docker-compose up -d</code>. The <code>-d</code> parameter ensures that Docker starts in a detached / daemon mode, meaning that the current console window is not consumed. If everything went well, then Jenkins should be accessible at the following URL: <code><a href="http://docker:18080" class="bare">http://docker:18080</a></code>.</p>
 </div>
 </div>
@@ -693,7 +713,25 @@ services:
 <h3 id="_step_2_adding_jenkins_plugins">Step 2 - Adding Jenkins plugins</h3>
 <div class="paragraph">
 <p>Ok, now we are going to add a file containing some plugins, which will be loaded automatically by Jenkins.
-Create a <code>plugins.txt</code> file inside the <code>jenkins</code> directory. Now let&#8217;s populate it with a bunch of <a href="https://raw.githubusercontent.com/sebivenlo/jenkins/b0ff6783bbfee331e2725ba0b1852a2693c4c614/jenkins/plugins.txt">plugins</a>, which we will need during this workshop.</p>
+Create a <code>plugins.txt</code> file inside the <code>jenkins</code> directory. Now let&#8217;s
+populate it with a bunch of
+<a href="https://raw.githubusercontent.com/sebivenlo/jenkins/b0ff6783bbfee331e2725ba0b1852a2693c4c614/jenkins/plugins.txt">plugins</a>,
+which we will need during this workshop.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you have a browser plugin
+to render your adoc pages, you may want to download the plugins.text
+file instead of opening it with the browser, because said plugin will
+almost certainly mess up the text.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>When we create the Jenkins container, we now also need to ensure that Jenkins knows about the plugins that we just defined. In order to do that, we need to move the plugins file to <code>/usr/local/bin/install-plugins.sh</code>. So let&#8217;s add that to our <code>Dockerfile</code>. Insert the following two lines <strong>before</strong> the last line of our <code>Dockerfile</code>:</p>
@@ -741,7 +779,7 @@ RUN /usr/local/bin/install-plugins.sh $(cat /var/jenkins_home/plugins.txt | tr -
 <p>After we have installed our Jenkins server, let&#8217;s do something meaningful. Let&#8217;s create a job for the <a href="https://github.com/sebivenlo/statemachines">statemachine</a> project.</p>
 </div>
 <div class="paragraph">
-<p>Therefore, at the homescreen of the Jenkins site click on <em>New item</em> and provide the job with a name like <strong>sebivenlo-mavenstatestack</strong>, choose <em>Freestyle project</em> as project type and click on <em>Save</em>.</p>
+<p>Therefore, at the homescreen of the Jenkins site click on <em>New item</em> and provide the job with a name like <strong>sebivenlo-mavenstatestack</strong>, choose <em>Freestyle project</em> as project type and click on <em>Ok</em>.</p>
 </div>
 <div class="paragraph">
 <p>Now, Jenkins is asking us to configure the job in detail. First of all, we have to choose the right <em>Source Control Management</em> system. Because the project is available on GitHub, Git is the right one. For the <em>Repository URL</em> we set the <a href="https://github.com/sebivenlo/statemachines">URL</a> of the Project.</p>
@@ -786,7 +824,11 @@ RUN /usr/local/bin/install-plugins.sh $(cat /var/jenkins_home/plugins.txt | tr -
 <div class="title">Figure 2. Maven Build Configuration</div>
 </div>
 <div class="paragraph">
-<p>Complete the configuration by clicking on save. So far, so good. Let&#8217;s have a look whether our fellow students did a great job. If we can build and test the project without any issues, everything is fine :). For that, choose the job and click on the <em>Build Now</em> button on the left-hand side. Now, there should be a new item at the <em>Build History</em> list at the bottom. Click on it and check the status. You can have a look at the <em>Console Output</em> as well. The result of the <em>Console Output</em> should look something like this:</p>
+<p>Complete the configuration by clicking on save. So far, so good. Let&#8217;s
+have a look whether our fellow students did a great job. If we can
+build and test the project without any issues, everything is fine
+:). For that, choose the job and click on the <em>Build Now</em> button on
+the left-hand side of the Jenkins menu. Now, there should be a new item at the <em>Build History</em> list at the bottom. Click on it and check the status. You can have a look at the <em>Console Output</em> as well. The result of the <em>Console Output</em> should look something like this:</p>
 </div>
 <div id="img-maven-console-output" class="imageblock">
 <div class="content">
@@ -972,7 +1014,7 @@ It would be nice if e.g. a Widfly service will be added.</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2016-11-23 15:55:07 CET
+Last updated 2016-11-24 09:07:50 CET
 </div>
 </div>
 </body>

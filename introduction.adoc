@@ -19,10 +19,12 @@ You should be familiar with Maven as well as with Docker. Furthermore, you need 
 To start with the exercises, clone the workshop repository:
 
 [source,bash]
+----
 git clone https://github.com/sebivenlo/jenkins.git
+cd jenkins
 git checkout workshop
 git checkout -f step-0
-
+----
 In case you get stuck during the workshop, you can simply checkout the repository at a specific step using the following command:
 
 [source,bash]

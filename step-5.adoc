@@ -1,7 +1,7 @@
 === Step 5 - Create Jenkins Job
 After we have installed our Jenkins server, let's do something meaningful. Let's create a job for the link:https://github.com/sebivenlo/statemachines[statemachine] project.
 
-Therefore, at the homescreen of the Jenkins site click on _New item_ and provide the job with a name like *sebivenlo-mavenstatestack*, choose _Freestyle project_ as project type and click on _Save_.
+Therefore, at the homescreen of the Jenkins site click on _New item_ and provide the job with a name like *sebivenlo-mavenstatestack*, choose _Freestyle project_ as project type and click on _Ok_.
 
 Now, Jenkins is asking us to configure the job in detail. First of all, we have to choose the right _Source Control Management_ system. Because the project is available on GitHub, Git is the right one. For the _Repository URL_ we set the link:https://github.com/sebivenlo/statemachines[URL] of the Project.
 
@@ -31,7 +31,11 @@ mavenstatestack/pom.xml
 image::configuration-build.png[Maven Build Configuration]
 
 
-Complete the configuration by clicking on save. So far, so good. Let's have a look whether our fellow students did a great job. If we can build and test the project without any issues, everything is fine :). For that, choose the job and click on the _Build Now_ button on the left-hand side. Now, there should be a new item at the _Build History_ list at the bottom. Click on it and check the status. You can have a look at the _Console Output_ as well. The result of the _Console Output_ should look something like this:
+Complete the configuration by clicking on save. So far, so good. Let's
+have a look whether our fellow students did a great job. If we can
+build and test the project without any issues, everything is fine
+:). For that, choose the job and click on the _Build Now_ button on
+the left-hand side of the Jenkins menu. Now, there should be a new item at the _Build History_ list at the bottom. Click on it and check the status. You can have a look at the _Console Output_ as well. The result of the _Console Output_ should look something like this:
 
 [[img-maven-console-output]]
 .Console Output of Maven Build
