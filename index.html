@@ -726,8 +726,8 @@ which we will need during this workshop.</p>
 </td>
 <td class="content">
 If you have a browser plugin
-to render your adoc pages, you may want to download the plugins.text
-file instead of opening it with the browser, because said plugin will
+to render your adoc pages, you may want to download (right-click,
+download) the plugins.text file instead of opening it with the browser, because said plugin will
 almost certainly mess up the text.
 </td>
 </tr>
@@ -786,11 +786,11 @@ RUN /usr/local/bin/install-plugins.sh $(cat /var/jenkins_home/plugins.txt | tr -
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code>Repository URL = https://github.com/sebivenlo/statemachines/</code></pre>
+<pre class="CodeRay highlight"><code>Repository URL = https://github.com/sebivenlo/jenkins/</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Because the project is a public project, we don&#8217;t need any credentials. So, we can skip it. The other settings in the SCM section can remain at their default values.</p>
+<p>Because the project is a public project, we don&#8217;t need any credentials. So, we can skip it. Since the test project is located in a branch other than the git <code>master</code> branch, we have to specify it by adding <code>*/ci-test-project</code> to the <em>Branch Specifier</em>. The other settings in the SCM section can remain at their default values.</p>
 </div>
 <div id="img-scm-configuration" class="imageblock">
 <div class="content">
@@ -807,14 +807,6 @@ RUN /usr/local/bin/install-plugins.sh $(cat /var/jenkins_home/plugins.txt | tr -
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="bash">clean test</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Afterwards, click on <em>Advanced</em> and specify the location of the POM file which will be executed. This is the relative path in our repository.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="CodeRay highlight"><code>mavenstatestack/pom.xml</code></pre>
 </div>
 </div>
 <div id="img-maven-build-configuration" class="imageblock">
@@ -1014,7 +1006,7 @@ It would be nice if e.g. a Widfly service will be added.</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2016-11-24 09:07:50 CET
+Last updated 2016-11-28 15:54:33 CET
 </div>
 </div>
 </body>

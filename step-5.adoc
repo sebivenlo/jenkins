@@ -6,9 +6,9 @@ Therefore, at the homescreen of the Jenkins site click on _New item_ and provide
 Now, Jenkins is asking us to configure the job in detail. First of all, we have to choose the right _Source Control Management_ system. Because the project is available on GitHub, Git is the right one. For the _Repository URL_ we set the link:https://github.com/sebivenlo/statemachines[URL] of the Project.
 
 [source]
-Repository URL = https://github.com/sebivenlo/statemachines/
+Repository URL = https://github.com/sebivenlo/jenkins/
 
-Because the project is a public project, we don't need any credentials. So, we can skip it. The other settings in the SCM section can remain at their default values.
+Because the project is a public project, we don't need any credentials. So, we can skip it. Since the test project is located in a branch other than the git `master` branch, we have to specify it by adding `*/ci-test-project` to the _Branch Specifier_. The other settings in the SCM section can remain at their default values.
 
 [[img-scm-configuration]]
 .The SCM Configuration
@@ -20,11 +20,6 @@ Therefore, click _add build step_ and choose, _Invoke top-level Maven targets_. 
 
 [source,bash]
 clean test
-
-Afterwards, click on _Advanced_ and specify the location of the POM file which will be executed. This is the relative path in our repository.
-
-[source]
-mavenstatestack/pom.xml
 
 [[img-maven-build-configuration]]
 .Maven Build Configuration
