@@ -24,6 +24,8 @@ RUN /usr/local/bin/install-plugins.sh $(cat /var/jenkins_home/plugins.txt | tr -
 # Adding default Jenkins Jobs
 COPY jobs/1-selenium2-clone-job.xml /usr/share/jenkins/ref/jobs/1-selenium2-clone-job/config.xml
 COPY jobs/2-sebivenlo-mavenstatestack-job.xml /usr/share/jenkins/ref/jobs/2-sebivenlo-mavenstatestack-job/config.xml
+COPY jobs/3-sebivenlo-mavenstatestack-docker-job.xml /usr/share/jenkins/ref/jobs/3-sebivenlo-mavenstatestack-docker-job/config.xml
+
 
 ############################################
 # Configure Jenkins
