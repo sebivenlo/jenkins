@@ -1,0 +1,6 @@
+FROM maven:3.3.9-jdk-8-alpine
+
+COPY . /usr/src/mavenstatestack
+WORKDIR /usr/src/mavenstatestack
+
+CMD mvn clean test
