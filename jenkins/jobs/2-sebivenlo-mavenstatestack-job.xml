@@ -5,7 +5,7 @@
   <keepDependencies>false</keepDependencies>
   <properties>
     <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.21.1">
-      <projectUrl>https://github.com/sebivenlo/statemachines/</projectUrl>
+      <projectUrl>https://github.com/sebivenlo/jenkins/</projectUrl>
       <displayName></displayName>
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
     <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.25">
@@ -17,12 +17,12 @@
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
-        <url>https://github.com/sebivenlo/statemachines/</url>
+        <url>https://github.com/sebivenlo/jenkins/</url>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
       <hudson.plugins.git.BranchSpec>
-        <name>*/master</name>
+        <name>*/ci-test-project</name>
       </hudson.plugins.git.BranchSpec>
     </branches>
     <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
@@ -39,7 +39,7 @@
     <hudson.tasks.Maven>
       <targets>clean test</targets>
       <mavenName>Maven 3.3.3</mavenName>
-      <pom>mavenstatestack/pom.xml</pom>
+      <pom>pom.xml</pom>
       <usePrivateRepository>false</usePrivateRepository>
       <settings class="jenkins.mvn.DefaultSettingsProvider"/>
       <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
@@ -50,8 +50,8 @@
 sonar.projectName=sebivenlo-statemachines state stack
 sonar.projectVersion=1.0
 
-sonar.sources=mavenstatestack/src/main/
-sonar.tests=mavenstatestack/src/test</properties>
+sonar.sources=src/main/
+sonar.tests=src/test</properties>
       <javaOpts></javaOpts>
       <additionalArguments></additionalArguments>
       <jdk>(Inherit From Job)</jdk>
@@ -60,7 +60,7 @@ sonar.tests=mavenstatestack/src/test</properties>
   </builders>
   <publishers>
     <hudson.tasks.junit.JUnitResultArchiver plugin="junit@1.18">
-      <testResults>mavenstatestack/target/surefire-reports/*.xml</testResults>
+      <testResults>target/surefire-reports/*.xml</testResults>
       <keepLongStdio>false</keepLongStdio>
       <healthScaleFactor>1.0</healthScaleFactor>
       <allowEmptyResults>false</allowEmptyResults>
