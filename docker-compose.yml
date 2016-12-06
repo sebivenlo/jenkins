@@ -13,7 +13,6 @@ services:
     - prodnetwork
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock
-    - /usr/local/bin/docker:/usr/bin/docker
     - /opt/jenkins/:/var/lib/jenkins/
   depends_on:
     - sonar
@@ -63,6 +62,7 @@ services:
     - prodnetwork
   environment:
    - HUB_PORT_4444_TCP_ADDR=seleniumhub
+   - HUB_PORT_4444_TCP_PORT=4444
   depends_on:
     - seleniumhub
  nodechrome:
@@ -73,5 +73,6 @@ services:
     - prodnetwork
   environment:
    - HUB_PORT_4444_TCP_ADDR=seleniumhub
+   - HUB_PORT_4444_TCP_PORT=4444
   depends_on:
     - seleniumhub
