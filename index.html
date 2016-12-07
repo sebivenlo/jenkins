@@ -667,7 +667,6 @@ services:
     - prodnetwork
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock
-    - /usr/local/bin/docker:/usr/bin/docker
     - /opt/jenkins/:/var/lib/jenkins</code></pre>
 </div>
 </div>
@@ -678,9 +677,7 @@ services:
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-For now, linux users may leave the volumes part out. This currently
-appears to work only under Mac OS-X and windows, because of the
-virtualisation that is used in those cases.
+Mounting a non-existing directory as a volume results in an error during the docker build processes. Ensure that the directories exist on your host machine.
 </td>
 </tr>
 </table>
@@ -715,7 +712,7 @@ sure the <code>config.xml</code> file lives in the directory <code>config</code>
 <p>Ok, now we are going to add a file containing some plugins, which will be loaded automatically by Jenkins.
 Create a <code>plugins.txt</code> file inside the <code>jenkins</code> directory. Now let&#8217;s
 populate it with a bunch of
-<a href="https://raw.githubusercontent.com/sebivenlo/jenkins/b0ff6783bbfee331e2725ba0b1852a2693c4c614/jenkins/plugins.txt">plugins</a>,
+<a href="https://raw.githubusercontent.com/sebivenlo/jenkins/e7bc3c2fd433b926e1c602056c3470cb7f6915d6/jenkins/plugins.txt">plugins</a>,
 which we will need during this workshop.</p>
 </div>
 <div class="admonitionblock note">
@@ -725,10 +722,7 @@ which we will need during this workshop.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If you have a browser plugin
-to render your adoc pages, you may want to download (right-click,
-download) the plugins.text file instead of opening it with the browser, because said plugin will
-almost certainly mess up the text.
+If you have a browser plugin to render your adoc pages, you may want to download (right-click, download) the plugins.txt file instead of opening it with the browser, because said plugin will almost certainly mess up the text.
 </td>
 </tr>
 </table>
@@ -776,13 +770,13 @@ RUN /usr/local/bin/install-plugins.sh $(cat /var/jenkins_home/plugins.txt | tr -
 <div class="sect2">
 <h3 id="_step_5_create_jenkins_job">Step 5 - Create Jenkins Job</h3>
 <div class="paragraph">
-<p>After we have installed our Jenkins server, let&#8217;s do something meaningful. Let&#8217;s create a job for the <a href="https://github.com/sebivenlo/statemachines">statemachine</a> project.</p>
+<p>After we have installed our Jenkins server, let&#8217;s do something meaningful. Let&#8217;s create a job for the <a href="https://github.com/sebivenlo/jenkins/tree/ci-test-project">statestack</a> project.</p>
 </div>
 <div class="paragraph">
 <p>Therefore, at the homescreen of the Jenkins site click on <em>New item</em> and provide the job with a name like <strong>sebivenlo-mavenstatestack</strong>, choose <em>Freestyle project</em> as project type and click on <em>Ok</em>.</p>
 </div>
 <div class="paragraph">
-<p>Now, Jenkins is asking us to configure the job in detail. First of all, we have to choose the right <em>Source Control Management</em> system. Because the project is available on GitHub, Git is the right one. For the <em>Repository URL</em> we set the <a href="https://github.com/sebivenlo/statemachines">URL</a> of the Project.</p>
+<p>Now, Jenkins is asking us to configure the job in detail. First of all, we have to choose the right <em>Source Control Management</em> system. Because the project is available on GitHub, Git is the right one. For the <em>Repository URL</em> we set the <a href="https://github.com/sebivenlo/jenkins/">URL</a> of the Project.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -842,7 +836,7 @@ the left-hand side of the Jenkins menu. Now, there should be a new item at the <
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="bash">git:3.0.0</code></pre>
+<pre class="CodeRay highlight"><code data-lang="bash">git</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -903,7 +897,7 @@ the left-hand side of the Jenkins menu. Now, there should be a new item at the <
 <i class="fa icon-caution" title="Caution"></i>
 </td>
 <td class="content">
-If there is no folder inside the <strong>~jobs/</strong> folder, please take <a href="https://raw.githubusercontent.com/sebivenlo/jenkins/workshop/jenkins/jobs/1-sebivenlo-mavenstatestack-job.xml">this</a> file
+If there is no folder inside the <strong>~/jobs/</strong> folder, please take <a href="https://raw.githubusercontent.com/sebivenlo/jenkins/workshop/jenkins/jobs/1-sebivenlo-mavenstatestack-job.xml">this</a> file
 </td>
 </tr>
 </table>
@@ -1006,7 +1000,7 @@ It would be nice if e.g. a Widfly service will be added.</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.0<br>
-Last updated 2016-11-28 15:54:33 CET
+Last updated 2016-12-07 14:21:43 CET
 </div>
 </div>
 </body>

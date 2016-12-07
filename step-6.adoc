@@ -4,7 +4,7 @@ Puhhhhh, this was a lot of work. Hopefully we don't have to do this a second tim
 First of all, we should add the git plugin. This can by done quite easily by adding the following line to the `jenkins/plugins.txt`:
 
 [source,bash]
-git:3.0.0
+git
 
 Secondly, we have to configure the Maven plugin. Therefore, we will create a `jenkins/config/hudson.tasks.Maven.xml` file and add the following contents to it.
 
@@ -44,7 +44,7 @@ Navigate to the `~/jobs/<your task name>` folder, put the contents of the *confi
 [source,bash]
 exit
 
-CAUTION: If there is no folder inside the *~jobs/* folder, please take https://raw.githubusercontent.com/sebivenlo/jenkins/workshop/jenkins/jobs/1-sebivenlo-mavenstatestack-job.xml[this] file
+CAUTION: If there is no folder inside the *~/jobs/* folder, please take https://raw.githubusercontent.com/sebivenlo/jenkins/workshop/jenkins/jobs/1-sebivenlo-mavenstatestack-job.xml[this] file
 
 Afterwards, create a *jobs* folder inside the Jenkins folder and add the content of your clipboard into `jobs/1-sebivenlo-mavenstatestack-job.xml`.
 

@@ -44,7 +44,7 @@ services:
 ```
 
 [WARNING]
-Mounting a non-existing directory as a volume results in an error during the docker build processes. Ensure that the directories exist on your host machine. 
+Mounting a non-existing directory as a volume results in an error during the docker build processes. Ensure that the directories exist on your host machine.
 
 Now that we created all of these files and directories, we should have
 something like this (created with the `tree`-command):

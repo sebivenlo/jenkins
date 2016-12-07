@@ -1,9 +1,9 @@
 === Step 5 - Create Jenkins Job
-After we have installed our Jenkins server, let's do something meaningful. Let's create a job for the link:https://github.com/sebivenlo/statemachines[statemachine] project.
+After we have installed our Jenkins server, let's do something meaningful. Let's create a job for the link:https://github.com/sebivenlo/jenkins/tree/ci-test-project[statestack] project.
 
 Therefore, at the homescreen of the Jenkins site click on _New item_ and provide the job with a name like *sebivenlo-mavenstatestack*, choose _Freestyle project_ as project type and click on _Ok_.
 
-Now, Jenkins is asking us to configure the job in detail. First of all, we have to choose the right _Source Control Management_ system. Because the project is available on GitHub, Git is the right one. For the _Repository URL_ we set the link:https://github.com/sebivenlo/statemachines[URL] of the Project.
+Now, Jenkins is asking us to configure the job in detail. First of all, we have to choose the right _Source Control Management_ system. Because the project is available on GitHub, Git is the right one. For the _Repository URL_ we set the link:https://github.com/sebivenlo/jenkins/[URL] of the Project.
 
 [source]
 Repository URL = https://github.com/sebivenlo/jenkins/
