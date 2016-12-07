@@ -3,7 +3,7 @@
   <installations>
     <hudson.plugins.sonar.SonarInstallation>
       <name>sonar</name>
-      <serverUrl>http://192.168.99.100:19000</serverUrl>
+      <serverUrl>http://sonar:9000</serverUrl>
       <serverVersion>5.1</serverVersion>
       <serverAuthenticationToken></serverAuthenticationToken>
       <mojoVersion></mojoVersion>

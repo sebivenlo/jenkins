@@ -8,7 +8,7 @@ The following services are preinstalled and configured:
 |--------------|---------------------------------|-------------------|
 | Jenkins      | http://docker:18080             | no login required |
 | Wildfly      | http://docker:8080              | no login required |
-| SonarQube    | http://docker:19000             | admin/admin       |
+| SonarQube    | http://docker:9000              | admin/admin       |
 | Selenium Hub | http://docker:4444/grid/console | no login required |
 
 ## Workshop

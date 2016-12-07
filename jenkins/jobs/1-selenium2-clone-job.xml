@@ -47,7 +47,7 @@
     <hudson.plugins.sonar.SonarRunnerBuilder plugin="sonar@2.4.4">
       <project></project>
       <properties>sonar.projectKey=selenium2-maven-test
-sonar.projectName=selenium2-maven-test hanspeter
+sonar.projectName=selenium2-maven-test
 sonar.projectVersion=1.0
 
 sonar.sources=src/test/</properties>

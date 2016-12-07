@@ -30,7 +30,7 @@ services:
  sonar:
   build: ./sonar
   ports:
-   - "19000:9000"
+   - "9000:9000"
    - "5432:5432"
   networks:
     - prodnetwork
