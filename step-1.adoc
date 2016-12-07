@@ -3,7 +3,7 @@
 Let's start by creating a basic setup to run Jenkins within Docker. First off let's create a directory in the root of the repository called `jenkins`. Inside this folder we are going to create a `Dockerfile`. Now let's give this file the following contents:
 
 ```
-FROM jenkins:2.7.4
+FROM jenkins
 
 USER root
 RUN apt-get update \
