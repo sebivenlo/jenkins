@@ -24,10 +24,12 @@ windows-slaves
 docker-commons
 script-security
 job-dsl
+github
 credentials
 chucknorris
 ssh-credentials
 pam-auth
+git
 workflow-step-api
 plugin-usage-plugin
 dashboard-view
@@ -41,7 +43,9 @@ matrix-auth
 authentication-tokens
 antisamy-markup-formatter
 workflow-scm-step
+github-api
 xunit
 docker-build-publish
 ws-cleanup
+git-client
 conditional-buildstep

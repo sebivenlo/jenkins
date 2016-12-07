@@ -19,4 +19,8 @@ USER jenkins
 COPY plugins.txt /var/jenkins_home/plugins.txt
 RUN /usr/local/bin/install-plugins.sh $(cat /var/jenkins_home/plugins.txt | tr -d '\r' | tr '\n' ' ')
 
+COPY jobs/1-sebivenlo-mavenstatestack-job.xml /usr/share/jenkins/ref/jobs/1-sebivenlo-mavenstatestack-job/config.xml
+
 COPY config/config.xml /usr/share/jenkins/ref/config.xml
+
+COPY config/hudson.tasks.Maven.xml /usr/share/jenkins/ref/hudson.tasks.Maven.xml
