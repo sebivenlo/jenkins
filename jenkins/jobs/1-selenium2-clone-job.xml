@@ -4,12 +4,12 @@
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties>
-    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild@1.25">
+    <com.sonyericsson.rebuild.RebuildSettings plugin="rebuild">
       <autoRebuild>false</autoRebuild>
       <rebuildDisabled>false</rebuildDisabled>
     </com.sonyericsson.rebuild.RebuildSettings>
   </properties>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.5.2">
+  <scm class="hudson.plugins.git.GitSCM" plugin="git">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
@@ -40,11 +40,11 @@
       <jvmOptions>-Xms512m -Xmx1024m</jvmOptions>
       <usePrivateRepository>false</usePrivateRepository>
       <settings class="jenkins.mvn.DefaultSettingsProvider"/>
-      <globalSettings class="org.jenkinsci.plugins.configfiles.maven.job.MvnGlobalSettingsProvider" plugin="config-file-provider@2.11">
+      <globalSettings class="org.jenkinsci.plugins.configfiles.maven.job.MvnGlobalSettingsProvider" plugin="config-file-provider">
         <settingsConfigId>org.jenkinsci.plugins.configfiles.maven.GlobalMavenSettingsConfig1435422191538</settingsConfigId>
       </globalSettings>
     </hudson.tasks.Maven>
-    <hudson.plugins.sonar.SonarRunnerBuilder plugin="sonar@2.4.4">
+    <hudson.plugins.sonar.SonarRunnerBuilder plugin="sonar">
       <project></project>
       <properties>sonar.projectKey=selenium2-maven-test
 sonar.projectName=selenium2-maven-test
@@ -58,10 +58,10 @@ sonar.sources=src/test/</properties>
     </hudson.plugins.sonar.SonarRunnerBuilder>
   </builders>
   <publishers>
-    <hudson.plugins.chucknorris.CordellWalkerRecorder plugin="chucknorris@1.0">
+    <hudson.plugins.chucknorris.CordellWalkerRecorder plugin="chucknorris">
       <factGenerator/>
     </hudson.plugins.chucknorris.CordellWalkerRecorder>
-    <hudson.tasks.junit.JUnitResultArchiver plugin="junit@1.15">
+    <hudson.tasks.junit.JUnitResultArchiver plugin="junit">
       <testResults>**/target/surefire-reports/*.xml</testResults>
       <keepLongStdio>false</keepLongStdio>
       <healthScaleFactor>1.0</healthScaleFactor>
