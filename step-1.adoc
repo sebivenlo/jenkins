@@ -1,6 +1,7 @@
 === Step 1 - Basic Jenkins setup
 
 Let's start by creating a basic setup to run Jenkins within Docker. First off let's create a directory in the root of the repository called `jenkins`. Inside this folder we are going to create a `Dockerfile`. Now let's give this file the following contents:
+
 ```
 FROM jenkins:2.7.4
 
@@ -16,11 +17,13 @@ USER jenkins
 
 COPY config/config.xml /usr/share/jenkins/ref/config.xml
 ```
+
 This `Dockerfile` ensures that an account, named `jenkins`, is created and given administrator rights, and also copies the Jenkins configuration file (that we will create next) to the correct folder.
 
 Now we are going to create a `config` directory inside the `jenkins` directory. Inside this directory create a file called `config.xml`, with  https://raw.githubusercontent.com/sebivenlo/jenkins/f57e42cc4f16d9bb0620b1d22f01df3c9a62954b/jenkins/config/config.xml[this] content. This file contains the basic configuration for Jenkins which will be used throughout this workshop.
 
 Finally inside the projects root directory, we will create a `docker-compose.yml` file. This file is used to start the Jenkins' Docker container and exposing it on port 18080. We will give the file the following contents:
+
 ```
 version: '2'
 
@@ -37,14 +40,11 @@ services:
     - prodnetwork
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock
-    - /usr/local/bin/docker:/usr/bin/docker
     - /opt/jenkins/:/var/lib/jenkins
 ```
 
 [WARNING]
-For now, linux users may leave the volumes part out. This currently
-appears to work only under Mac OS-X and windows, because of the
-virtualisation that is used in those cases.
+Mounting a non-existing directory as a volume results in an error during the docker build processes. Ensure that the directories exist on your host machine. 
 
 Now that we created all of these files and directories, we should have
 something like this (created with the `tree`-command):
@@ -61,6 +61,5 @@ something like this (created with the `tree`-command):
 
 The order in your output may differ, that is no problem. However, make
 sure the `config.xml` file lives in the directory `config`.
-
 
 Let's verify that Jenkins is working by executing the following command inside the root of the repository: `docker-compose up -d`. The `-d` parameter ensures that Docker starts in a detached / daemon mode, meaning that the current console window is not consumed. If everything went well, then Jenkins should be accessible at the following URL: `http://docker:18080`.
