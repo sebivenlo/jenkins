@@ -1,0 +1,19 @@
+FROM jenkins
+
+USER root
+RUN apt-get update \
+      && apt-get install -y sudo curl\
+      && rm -rf /var/lib/apt/lists/*
+RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
+
+# getting the docker-cli
+# --- Attention: docker.sock needs to be mounted as volume in docker-compose.yml
+# see: https://issues.jenkins-ci.org/browse/JENKINS-35025
+# see: https://get.docker.com/builds/
+# see: https://wiki.jenkins-ci.org/display/JENKINS/CloudBees+Docker+Custom+Build+Environment+Plugin#CloudBeesDockerCustomBuildEnvironmentPlugin-DockerinDocker
+RUN curl -sSL -O https://get.docker.com/builds/Linux/x86_64/docker-latest.tgz && tar -xvzf docker-latest.tgz
+RUN mv docker/* /usr/bin/
+
+USER jenkins
+
+COPY config/config.xml /usr/share/jenkins/ref/config.xml
